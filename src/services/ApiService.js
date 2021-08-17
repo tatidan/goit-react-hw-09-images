@@ -7,7 +7,9 @@ const fetchPhotos = async ({ searchQuery = "", currentPage = 1 }) => {
   try {
     const searchURL = `${BASE_URL}/?q=${searchQuery}&page=${currentPage}&key=${API_KEY}&image_type=photo&orientation=horizontal&per_page=12`;
 
-    return await axios.get(searchURL).then((response) => response.data.hits);
+    return await axios.get(searchURL).then((response) => {
+      return response.data.hits;
+    });
   } catch (error) {
     console.log(error);
   }

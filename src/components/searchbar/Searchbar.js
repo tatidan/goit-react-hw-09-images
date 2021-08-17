@@ -7,15 +7,17 @@ const initialState = {
 
 const Searchbar = ({ onSubmit }) => {
   const [state, setState] = useState(initialState);
+  // console.log(state);
 
   const handleChange = (e) => {
-    setState((prev) => ({ ...prev, query: e.currentTarget.value }));
+    console.log(e.currentTarget.value);
+    setState((prev) => ({ ...prev, query: e.target.value }));
   };
 
   const handleSubmit = (e) => {
     e.preventDefault();
+    console.log(state.query);
     onSubmit(state.query);
-
     reset();
   };
 

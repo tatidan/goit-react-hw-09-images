@@ -1,12 +1,9 @@
-import React, {
-  useState,
-  // useEffect
-} from "react";
+import React, { useState, useEffect } from "react";
 import Searchbar from "./components/searchbar/Searchbar";
 import ImageGallery from "./components/imageGallery/ImageGallery";
 import Modal from "./components/modal/Modal";
 import LoaderSpinner from "react-loader-spinner";
-import ApiService from "./services/ApiService";
+import fetchPhotosApi from "./services/ApiService";
 import Button from "./components/button/Button";
 
 const initialState = {
@@ -17,18 +14,6 @@ const initialState = {
   largeImage: "",
   error: null,
 };
-
-// useEffect(() => {
-//   return () => {
-//     effect
-//   };
-// }, [input])
-//============вместо didUpdate===========
-// componentDidUpdate(prevProps, prevState) {
-//   if (prevState.searchQuery !== this.state.searchQuery) {
-//     this.fetchPhotos();
-//   }
-// }
 
 const App = () => {
   const [state, setState] = useState(initialState);
@@ -53,8 +38,9 @@ const App = () => {
 
     setState((prev) => ({ ...prev, isLoading: true }));
 
-    ApiService.fetchPhotos(options)
+    fetchPhotosApi(options)
       .then((photos) => {
+        console.log(photos);
         setState((prev) => ({
           ...prev,
           photos: [...prev.photos, ...photos],
@@ -72,6 +58,10 @@ const App = () => {
         });
       });
   };
+
+  useEffect(() => {
+    state.searchQuery && fetchPhotos(state.searchQuery);
+  }, [state.searchQuery]);
 
   const toggleModal = () => {
     setState((prev) => ({ ...prev, largeImage: !largeImage }));
